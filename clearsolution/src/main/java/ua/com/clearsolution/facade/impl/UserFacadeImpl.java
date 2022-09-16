@@ -9,6 +9,7 @@ import ua.com.clearsolution.persistence.datatable.DataTableResponse;
 import ua.com.clearsolution.persistence.entity.User;
 import ua.com.clearsolution.service.UserService;
 import ua.com.clearsolution.util.WebRequestUtil;
+import ua.com.clearsolution.validatedate.UserDateValid;
 import ua.com.clearsolution.view.dto.request.PageAndSizeData;
 import ua.com.clearsolution.view.dto.request.SortData;
 import ua.com.clearsolution.view.dto.request.UserRequestDto;
@@ -30,27 +31,26 @@ public class UserFacadeImpl implements UserFacade {
     @Override
     public void create(UserRequestDto userRequestDto) {
         User user = new User();
-        user.setEmail(userRequestDto.getEmail());
-        user.setFirstname(userRequestDto.getFirstname());
-        user.setLastname(userRequestDto.getLastname());
-        user.setBirthday(userRequestDto.getBirthday());
-        user.setCity(userRequestDto.getCity());
-        user.setPhone(userRequestDto.getPhone());
-//        student.setAge(studentRequestDto.getAge());
+        setAllFieldsUser(userRequestDto, user, userRequestDto.getPhone());
         studentService.create(user);
     }
 
     @Override
     public void update(UserRequestDto userRequestDto, long id) {
         User user = studentService.findById(id).get();
+        setAllFieldsUser(userRequestDto, user, user.getPhone());
+        studentService.update(user);
+    }
+
+    private void setAllFieldsUser(UserRequestDto userRequestDto, User user, String phone) {
         user.setEmail(userRequestDto.getEmail());
         user.setFirstname(userRequestDto.getFirstname());
         user.setLastname(userRequestDto.getLastname());
-        user.setBirthday(userRequestDto.getBirthday());
+        if (UserDateValid.userValidDate(userRequestDto) != null) {
+            user.setBirthDay(UserDateValid.userValidDate(userRequestDto));
+        }
         user.setCity(userRequestDto.getCity());
-        user.setPhone(user.getPhone());
-//        student.setAge(studentRequestDto.getAge());
-        studentService.update(user);
+        user.setPhone(phone);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class UserFacadeImpl implements UserFacade {
         pageData.setOrder(sortData.getOrder());
         pageData.setSort(sortData.getSort());
         pageData.setItemsSize(all.getItemsSize());
-        pageData.initPaginationState(pageData.getCurrentPage());
+        pageData.initPaginationState();
         return pageData;
     }
 

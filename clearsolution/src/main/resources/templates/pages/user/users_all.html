@@ -4,7 +4,6 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{fragments/data_table}">
 <head>
-<head>
     <meta charset="utf-8">
     <title>Users</title>
     <link href="/css/app.css" rel="stylesheet">
@@ -18,8 +17,7 @@
         <td th:text="${user.getEmail}"></td>
         <td th:text="${user.getFirstname()}"></td>
         <td th:text="${user.getLastname()}"></td>
-        <td th:text="${user.getCity()}"></td>
-        <td th:text="${user.getPhone()}"></td>
+        <td th:text="${user.getBirthday()}"></td>
         <td>
             <a th:href="@{'/users/details/' + ${user.getId()}}" type="button" class="btn btn-warning">details</a>
         </td>

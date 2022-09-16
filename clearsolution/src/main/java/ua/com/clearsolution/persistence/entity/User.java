@@ -2,6 +2,7 @@ package ua.com.clearsolution.persistence.entity;
 
 import groovy.transform.EqualsAndHashCode;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -13,7 +14,7 @@ public class User extends BaseEntity {
     public User() {
         super();
     }
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String email;
 
     @Column(name = "first_name")
@@ -22,8 +23,10 @@ public class User extends BaseEntity {
     @Column(name = "last_name")
     private String lastname;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date birthday;
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
+    @Column(name = "birth_day")
+    private Date birthDay;
 
     @Column(name = "address")
     private String city;

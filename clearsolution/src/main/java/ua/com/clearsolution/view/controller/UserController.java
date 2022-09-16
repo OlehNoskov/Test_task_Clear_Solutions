@@ -12,10 +12,10 @@ import ua.com.clearsolution.view.dto.request.UserRequestDto;
 import ua.com.clearsolution.view.dto.response.PageData;
 import ua.com.clearsolution.view.dto.response.UserResponseDto;
 
+
 @Controller
 @RequestMapping("/users")
 public class UserController extends AbstractController {
-
     private final UserFacade studentFacade;
 
     public UserController(UserFacade studentFacade) {
@@ -28,9 +28,7 @@ public class UserController extends AbstractController {
                 new HeaderName("email", "email", "email"),
                 new HeaderName("first name", "firstname", "first_name"),
                 new HeaderName("last name", "lastname", "first_name"),
-//                new HeaderName("age", "age", "age"),
-                new HeaderName("city", "city", "city"),
-                new HeaderName("phone", "phone", "phone"),
+                new HeaderName("birth_day", "birth_day", "birth_day"),
                 new HeaderName("details", null, null),
                 new HeaderName("edit", null, null),
                 new HeaderName("delete", null, null)

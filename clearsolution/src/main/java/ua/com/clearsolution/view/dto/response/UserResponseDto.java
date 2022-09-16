@@ -18,20 +18,30 @@ public class UserResponseDto extends ResponseDto {
     private String city;
     @Getter
     private String phone;
-//      @Getter
-//    private Integer age;
 
-    public UserResponseDto() {
-    }
+    private String day;
+    private String months;
+    private String year;
 
     public UserResponseDto(User user) {
         setId(user.getId());
         this.email = user.getEmail();
         this.firstname = user.getFirstname();
         this.lastname = user.getLastname();
-        this.birthday = user.getBirthday();
+        this.birthday = user.getBirthDay();
         this.city = user.getCity();
         this.phone = user.getPhone();
-//        this.age = student.getAge();
+    }
+
+    public String getDay() {
+        return birthday.getDay() + "";
+    }
+
+    public String getMonths() {
+        return birthday.getMonth() + "";
+    }
+
+    public String getYear() {
+        return birthday.getYear() + "";
     }
 }

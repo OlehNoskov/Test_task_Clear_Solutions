@@ -32,10 +32,10 @@
                             <th>Surname</th>
                             <td th:text="${user.getLastname()}"></td>
                         </tr>
-                        <!--            <tr>-->
-                        <!--              <th>age</th>-->
-                        <!--              <td th:text="${user.getAge()}"></td>-->
-                        <!--            </tr>-->
+                        <tr>
+                            <th>age</th>
+                            <td th:text="${user.getBirthday()}"></td>
+                        </tr>
                         <tr>
                             <th>City</th>
                             <td th:text="${user.getCity()}"></td>
@@ -51,8 +51,6 @@
             </div>
         </div>
     </div>
-
 </div>
-
 </body>
 </html>
