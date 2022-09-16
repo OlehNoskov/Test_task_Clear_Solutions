@@ -35,7 +35,7 @@ public class UserFacadeImpl implements UserFacade {
         user.setLastname(userRequestDto.getLastname());
         user.setBirthday(userRequestDto.getBirthday());
         user.setCity(userRequestDto.getCity());
-        user.setPhone(user.getPhone());
+        user.setPhone(userRequestDto.getPhone());
 //        student.setAge(studentRequestDto.getAge());
         studentService.create(user);
     }
