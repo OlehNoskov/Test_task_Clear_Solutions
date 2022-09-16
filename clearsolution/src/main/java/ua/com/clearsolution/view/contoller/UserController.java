@@ -1,4 +1,4 @@
-package ua.com.clearsolution.contoller;
+package ua.com.clearsolution.view.contoller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +20,7 @@ public class UserController {
         model.addAttribute("users", users);
         model.addAttribute("createUrl", "/users/all");
         model.addAttribute("cardHeader", "All Users");
-        return "pages/student/student_all";
+        return "user_all";
     }
 
 //    @PostMapping("/all")
