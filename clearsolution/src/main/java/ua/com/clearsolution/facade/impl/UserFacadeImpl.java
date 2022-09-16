@@ -1,6 +1,7 @@
 package ua.com.clearsolution.facade.impl;
 
 import org.springframework.stereotype.Service;
+import org.springframework.validation.Errors;
 import org.springframework.web.context.request.WebRequest;
 
 import ua.com.clearsolution.facade.UserFacade;
@@ -104,6 +105,21 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     private boolean isInputDateMoreThanCurrent(UserRequestDto userRequestDto) {
+        if (UserDateValid.userValidDate(userRequestDto) == null){
+            return false;
+        }
         return Objects.requireNonNull(UserDateValid.userValidDate(userRequestDto)).before(new Date(System.currentTimeMillis()));
+    }
+
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return UserRequestDto.class.equals(clazz);
+    }
+
+    @Override
+    public void validate(Object target, Errors errors) {
+        if (!isInputDateMoreThanCurrent((UserRequestDto) target)) {
+            errors.rejectValue("day", "date.input.error");
+        }
     }
 }

@@ -3,6 +3,7 @@ package ua.com.clearsolution.view.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,14 +13,14 @@ import ua.com.clearsolution.view.dto.request.UserRequestDto;
 import ua.com.clearsolution.view.dto.response.PageData;
 import ua.com.clearsolution.view.dto.response.UserResponseDto;
 
-
+//@RestController
 @Controller
 @RequestMapping("/users")
 public class UserController extends AbstractController {
-    private final UserFacade studentFacade;
+    private final UserFacade userFacade;
 
-    public UserController(UserFacade studentFacade) {
-        this.studentFacade = studentFacade;
+    public UserController(UserFacade userFacade) {
+        this.userFacade = userFacade;
     }
 
     private HeaderName[] getColumnTitles() {
@@ -37,7 +38,7 @@ public class UserController extends AbstractController {
 
     @GetMapping
     public String findAll(Model model, WebRequest request) {
-        PageData<UserResponseDto> response = studentFacade.findAll(request);
+        PageData<UserResponseDto> response = userFacade.findAll(request);
         initDataTable(response, getColumnTitles(), model);
         model.addAttribute("createUrl", "/users/all");
         model.addAttribute("cardHeader", "All Users");
@@ -55,34 +56,44 @@ public class UserController extends AbstractController {
         return "pages/user/user_new";
     }
 
+//    @PostMapping("/new")
+//    public String createNewStudent(@ModelAttribute("user") UserRequestDto userRequestDto) {
+//        studentFacade.create(userRequestDto);
+//        return "redirect:/users";
+//    }
+
     @PostMapping("/new")
-    public String createNewStudent(@ModelAttribute("user") UserRequestDto userRequestDto) {
-        studentFacade.create(userRequestDto);
+    public String createNewStudent(@ModelAttribute("user") UserRequestDto userRequestDto, BindingResult bindingResult, Model model) {
+        showMessage(model, false);
+        userFacade.validate(userRequestDto, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "users/new";
+        }
         return "redirect:/users";
     }
 
     @PostMapping("/update/{id}")
     public String updateStudent(@PathVariable Long id, @ModelAttribute("user") UserRequestDto userRequestDto) {
-        studentFacade.update(userRequestDto, id);
+        userFacade.update(userRequestDto, id);
         return "redirect:/users";
     }
 
     @GetMapping("/update/{id}")
     public String update(@PathVariable Long id, Model model) {
-        UserResponseDto userResponseDto = studentFacade.findById(id);
+        UserResponseDto userResponseDto = userFacade.findById(id);
         model.addAttribute("user", userResponseDto);
         return "pages/user/user_update";
     }
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
-        studentFacade.delete(id);
+        userFacade.delete(id);
         return "redirect:/users";
     }
 
     @GetMapping("/details/{id}")
     public String details(@PathVariable Long id, Model model) {
-        UserResponseDto userResponseDto = studentFacade.findById(id);
+        UserResponseDto userResponseDto = userFacade.findById(id);
         model.addAttribute("user", userResponseDto);
         return "pages/user/user_details";
     }

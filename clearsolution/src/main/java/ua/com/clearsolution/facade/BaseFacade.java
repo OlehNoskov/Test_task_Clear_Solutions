@@ -6,7 +6,7 @@ import ua.com.clearsolution.view.dto.request.RequestDto;
 import ua.com.clearsolution.view.dto.response.PageData;
 import ua.com.clearsolution.view.dto.response.ResponseDto;
 
-public interface BaseFacade <REQ extends RequestDto, RES extends ResponseDto> {
+public interface BaseFacade <REQ extends RequestDto, RES extends ResponseDto> extends MainFacade {
 
     void create(REQ req);
     void update(REQ req, long id);
