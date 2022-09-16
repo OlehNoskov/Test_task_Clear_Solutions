@@ -1,16 +1,15 @@
 package ua.com.clearsolution.persistence.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Date;
+import javax.persistence.*;
 
-@Data
+@MappedSuperclass
 public abstract class BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
+    @Setter
     private Long id;
-    private String email;
-    private String firstName;
-    private String lastName;
-    private Date birthday;
-    private String address;
-    private String phone;
 }

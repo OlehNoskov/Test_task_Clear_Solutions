@@ -59,8 +59,7 @@ public class HibernateConfig {
     private static final String MIN_SIZE = "hibernate.c3p0.min_size";
     private static final String BATCH_SIZE = "hibernate.jdbc.batch_size";
     private static final String FETCH_SIZE = "hibernate.jdbc.fetch_size";
-    private static final String ENTITY_MANAGER_PACKAGES_TO_SCAN = "ua.com.alevel.persistence.entity";
-                                    //Уточняем где находятся ENTITY классы, так будет быстрее работать.
+    private static final String ENTITY_MANAGER_PACKAGES_TO_SCAN = "ua.com.clearsolution.persistence.entity";
 
     @Bean
     public DataSource dataSource() {
@@ -86,7 +85,7 @@ public class HibernateConfig {
         return sessionFactoryBean;
     }
 
-    //Описание тракзакций, как ему работать
+    //Describe working transactions
     @Bean
     public HibernateTransactionManager transactionManager() {
         HibernateTransactionManager manager = new HibernateTransactionManager();

@@ -1,14 +1,27 @@
 package ua.com.clearsolution.view.dto.request;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Date;
 
-@Data
-public class UserRequestDto extends RequestDto{
+public class UserRequestDto extends RequestDto {
+    @Getter
+    @Setter
     private String email;
-    private String firstName;
-    private String lastName;
+    @Getter
+    @Setter
+    private String firstname;
+    @Getter
+    @Setter
+    private String lastname;
+    @Getter
+    @Setter
     private Date birthday;
-    private String address;
+    @Getter
+    @Setter
+    private String city;
+    @Getter
+    @Setter
     private String phone;
 }

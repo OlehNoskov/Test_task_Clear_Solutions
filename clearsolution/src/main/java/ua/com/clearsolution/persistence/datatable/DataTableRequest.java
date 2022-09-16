@@ -1,56 +1,29 @@
 package ua.com.clearsolution.persistence.datatable;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class DataTableRequest {
+    @Getter
+    @Setter
     private int page;
+    @Getter
+    @Setter
     private int size;
+    @Getter
+    @Setter
     private String order;
+    @Getter
+    @Setter
     private String sort;
+    @Getter
+    @Setter
     private Map<String, String[]> requestParamMap;
 
     public DataTableRequest() {
         this.requestParamMap = new HashMap<>();
-    }
-
-    public int getPage() {
-        return page;
-    }
-
-    public void setPage(int page) {
-        this.page = page;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
-
-    public String getOrder() {
-        return order;
-    }
-
-    public void setOrder(String order) {
-        this.order = order;
-    }
-
-    public String getSort() {
-        return sort;
-    }
-
-    public void setSort(String sort) {
-        this.sort = sort;
-    }
-
-    public Map<String, String[]> getRequestParamMap() {
-        return requestParamMap;
-    }
-
-    public void setRequestParamMap(Map<String, String[]> requestParamMap) {
-        this.requestParamMap = requestParamMap;
     }
 }

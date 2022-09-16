@@ -2,6 +2,7 @@ package ua.com.clearsolution.facade.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.WebRequest;
+
 import ua.com.clearsolution.facade.UserFacade;
 import ua.com.clearsolution.persistence.datatable.DataTableRequest;
 import ua.com.clearsolution.persistence.datatable.DataTableResponse;
@@ -15,52 +16,51 @@ import ua.com.clearsolution.view.dto.response.PageData;
 import ua.com.clearsolution.view.dto.response.UserResponseDto;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
 public class UserFacadeImpl implements UserFacade {
 
-    private final UserService userService;
+    private final UserService studentService;
 
-    public UserFacadeImpl(UserService userService) {
-        this.userService = userService;
+    public UserFacadeImpl(UserService studentService) {
+        this.studentService = studentService;
     }
 
     @Override
     public void create(UserRequestDto userRequestDto) {
         User user = new User();
         user.setEmail(userRequestDto.getEmail());
-        user.setFirstName(userRequestDto.getFirstName());
-        user.setLastName(userRequestDto.getLastName());
+        user.setFirstname(userRequestDto.getFirstname());
+        user.setLastname(userRequestDto.getLastname());
         user.setBirthday(userRequestDto.getBirthday());
-        user.setAddress(userRequestDto.getAddress());
-        user.setPhone(userRequestDto.getPhone());
-
-        userService.create(user);
+        user.setCity(userRequestDto.getCity());
+        user.setPhone(user.getPhone());
+//        student.setAge(studentRequestDto.getAge());
+        studentService.create(user);
     }
 
     @Override
     public void update(UserRequestDto userRequestDto, long id) {
-        User user = userService.findByID(id);
+        User user = studentService.findById(id).get();
         user.setEmail(userRequestDto.getEmail());
-        user.setFirstName(userRequestDto.getFirstName());
-        user.setLastName(userRequestDto.getLastName());
+        user.setFirstname(userRequestDto.getFirstname());
+        user.setLastname(userRequestDto.getLastname());
         user.setBirthday(userRequestDto.getBirthday());
-        user.setAddress(userRequestDto.getAddress());
-        user.setPhone(userRequestDto.getPhone());
-
-        userService.update(user);
+        user.setCity(userRequestDto.getCity());
+        user.setPhone(user.getPhone());
+//        student.setAge(studentRequestDto.getAge());
+        studentService.update(user);
     }
 
     @Override
     public void delete(long id) {
-        userService.delete(id);
+        studentService.delete(id);
     }
 
     @Override
     public UserResponseDto findById(long id) {
-        return new UserResponseDto(userService.findByID(id));
+        return new UserResponseDto(studentService.findById(id).get());
     }
 
     @Override
@@ -74,9 +74,7 @@ public class UserFacadeImpl implements UserFacade {
         dataTableRequest.setSort(sortData.getSort());
         dataTableRequest.setOrder(sortData.getOrder());
 
-        Map<String, String[]> parameterMap = request.getParameterMap();
-
-        DataTableResponse<User> all = userService.findByAll(dataTableRequest);
+        DataTableResponse<User> all = studentService.findAll(dataTableRequest);
 
         List<UserResponseDto> list = all.getItems().
                 stream().
@@ -96,8 +94,8 @@ public class UserFacadeImpl implements UserFacade {
 
     @Override
     public List<UserResponseDto> findAll() {
-        List<User> allStudents = userService.findAll();
-        List<UserResponseDto> list = allStudents.stream().map(UserResponseDto::new).collect(Collectors.toList());
+        List<User> allUsers = studentService.findAll();
+        List<UserResponseDto> list = allUsers.stream().map(UserResponseDto::new).collect(Collectors.toList());
         return list;
     }
 }

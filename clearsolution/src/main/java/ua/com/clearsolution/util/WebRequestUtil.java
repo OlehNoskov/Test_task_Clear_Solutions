@@ -2,6 +2,7 @@ package ua.com.clearsolution.util;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.context.request.WebRequest;
+
 import ua.com.clearsolution.view.dto.request.PageAndSizeData;
 import ua.com.clearsolution.view.dto.request.SortData;
 
@@ -25,9 +26,17 @@ public class WebRequestUtil {
         return new PageAndSizeData(page, size);
     }
 
+    public static PageAndSizeData defaultPageAndSizeData() {
+        return new PageAndSizeData(DEFAULT_PAGE_PARAM_VALUE, DEFAULT_SIZE_PARAM_VALUE);
+    }
+
     public static SortData generateSortData(WebRequest webRequest) {
         String sort = StringUtils.isNotBlank(webRequest.getParameter(SORT_PARAM)) ? Objects.requireNonNull(webRequest.getParameter(SORT_PARAM)) : DEFAULT_SORT_PARAM_VALUE;
         String order = StringUtils.isNotBlank(webRequest.getParameter(ORDER_PARAM)) ? Objects.requireNonNull(webRequest.getParameter(ORDER_PARAM)) : DEFAULT_ORDER_PARAM_VALUE;
         return new SortData(sort, order);
+    }
+
+    public static SortData defaultSortData() {
+        return new SortData(DEFAULT_SORT_PARAM_VALUE, DEFAULT_ORDER_PARAM_VALUE);
     }
 }

@@ -1,9 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu');
 html,body {
-    background: url('https://img2.akspic.ru/crops/8/3/7/9/6/169738/169738-krasochnost-art-polutona_i_ottenki-purpurnyj_cvet-uzor-1920x1080.jpg') no-repeat center center fixed;
+    background: url('https://img2.akspic.ru/originals/4/1/7/4/14714-tuman-fon-dymka-tekstura-atmosfera-1920x1080.jpg') no-repeat center center fixed;
     background-size: cover;
     height: 100%;
     font-family: 'Ubuntu', sans-serif;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
+}
+a.nav-item.nav-link:hover{
+    cursor: pointer;
+    text-decoration-line: underline;
+    color: #12ccc6;
+}
+a.nav-item.nav-link {
+    color: white;
+}
+.sort {
+    cursor: pointer;
+    margin-right: 2em;
 }

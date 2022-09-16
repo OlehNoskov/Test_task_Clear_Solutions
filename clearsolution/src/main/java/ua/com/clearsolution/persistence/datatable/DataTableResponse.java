@@ -1,6 +1,7 @@
 package ua.com.clearsolution.persistence.datatable;
 
-
+import lombok.Getter;
+import lombok.Setter;
 import ua.com.clearsolution.persistence.entity.BaseEntity;
 
 import java.util.Collections;
@@ -8,13 +9,29 @@ import java.util.List;
 import java.util.Map;
 
 public class DataTableResponse <E extends BaseEntity>{
+    @Getter
+    @Setter
     private int currentPage;
+    @Getter
+    @Setter
     private int pageSize;
+    @Getter
+    @Setter
     private int size;
+    @Getter
+    @Setter
     private long itemsSize;
+    @Getter
+    @Setter
     private String sort;
+    @Getter
+    @Setter
     private String order;
+    @Getter
+    @Setter
     private List<E> items;
+    @Getter
+    @Setter
     private Map<Object, Object> otherParamMap;
 
     public DataTableResponse() {
@@ -23,69 +40,5 @@ public class DataTableResponse <E extends BaseEntity>{
         this.itemsSize = 0;
         this.items = Collections.emptyList();
         this.otherParamMap = Collections.emptyMap();
-    }
-
-    public int getCurrentPage() {
-        return currentPage;
-    }
-
-    public void setCurrentPage(int currentPage) {
-        this.currentPage = currentPage;
-    }
-
-    public int getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    public long getItemsSize() {
-        return itemsSize;
-    }
-
-    public void setItemsSize(long itemsSize) {
-        this.itemsSize = itemsSize;
-    }
-
-    public List<E> getItems() {
-        return items;
-    }
-
-    public void setItems(List<E> items) {
-        this.items = items;
-    }
-
-    public Map<Object, Object> getOtherParamMap() {
-        return otherParamMap;
-    }
-
-    public void setOtherParamMap(Map<Object, Object> otherParamMap) {
-        this.otherParamMap = otherParamMap;
-    }
-
-    public String getSort() {
-        return sort;
-    }
-
-    public void setSort(String sort) {
-        this.sort = sort;
-    }
-
-    public String getOrder() {
-        return order;
-    }
-
-    public void setOrder(String order) {
-        this.order = order;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
     }
 }

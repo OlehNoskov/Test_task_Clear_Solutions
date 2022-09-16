@@ -5,8 +5,8 @@
       layout:decorate="~{layout}">
 <head>
   <meta charset="utf-8">
-  <title>Details Student</title>
-  <link href="/css/app.css" rel="stylesheet">
+  <title>Details User</title>
+  <link href="css/app.css" rel="stylesheet">
 </head>
 <body>
 
@@ -16,41 +16,38 @@
     <div class="col-12">
       <div class="card mb-2 mt-2">
         <div class="card-header">
-          Details Student
+          Details User
         </div>
         <div class="card-body">
           <table class="table table-hover">
             <tr>
               <th>id</th>
-              <td th:text="${student.getId()}"></td>
+              <td th:text="${user.getId()}"></td>
             </tr>
             <tr>
               <th>first name</th>
-              <td th:text="${student.getFirstname()}"></td>
+              <td th:text="${user.getFirstname()}"></td>
             </tr>
             <tr>
               <th>last name</th>
-              <td th:text="${student.getLastname()}"></td>
+              <td th:text="${user.getLastname()}"></td>
             </tr>
             <tr>
               <th>age</th>
-              <td th:text="${student.getAge()}"></td>
+              <td th:text="${user.getAge()}"></td>
             </tr>
             <tr>
               <th>created</th>
-              <td th:text="${#calendars.format(student.getCreated(),'dd MMMM yyyy')}"></td>
+              <td th:text="${#calendars.format(user.getCreated(),'dd MMMM yyyy')}"></td>
             </tr>
             <tr>
               <th>updated</th>
-              <td th:text="${#calendars.format(student.getUpdated(),'dd MMMM yyyy')}"></td>
+              <td th:text="${#calendars.format(user.getUpdated(),'dd MMMM yyyy')}"></td>
             </tr>
             <tr>
           </table>
           <hr>
         </div>
-<!--        <div>-->
-<!--          <a th:href="@{/students}" type="button" class="btn btn-primary">Back to list Groups</a>-->
-<!--        </div>-->
       </div>
     </div>
   </div>
