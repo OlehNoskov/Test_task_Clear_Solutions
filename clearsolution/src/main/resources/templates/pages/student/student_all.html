@@ -12,6 +12,13 @@
 <body>
 <div layout:fragment="content">
     <h1>Work!!!</h1>
+
+    <tr th:each="user,iter : ${users}">
+        <td th:text="${iter.count}"></td>
+        <td th:text="${user.getId}"></td>
+        <td th:text="${user.getFirstName}"></td>
+        <td th:text="${user.getLastName}"></td>
+    </tr>
 </div>
 
 </body>

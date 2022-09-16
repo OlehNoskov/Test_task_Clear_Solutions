@@ -1,15 +1,25 @@
 package ua.com.clearsolution.contoller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.request.WebRequest;
+import ua.com.clearsolution.db.impl.UserDBImpl;
+import ua.com.clearsolution.persistence.entity.User;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
+    List<User> users = UserDBImpl.users;
 
     @GetMapping
-    public String findAll() {
+    public String findAll(Model model, WebRequest request) {
+        model.addAttribute("users", users);
+        model.addAttribute("createUrl", "/users/all");
+        model.addAttribute("cardHeader", "All Users");
         return "pages/student/student_all";
     }
 

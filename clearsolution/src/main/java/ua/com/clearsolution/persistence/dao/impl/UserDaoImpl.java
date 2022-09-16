@@ -10,6 +10,7 @@ import java.util.Collection;
 
 public class UserDaoImpl implements UserDao {
     private final UserDB userDB = UserDBImpl.getInstance();
+
     @Override
     public void create(User entity) {
         try {
