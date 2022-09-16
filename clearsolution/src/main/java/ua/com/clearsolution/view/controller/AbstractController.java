@@ -1,5 +1,7 @@
 package ua.com.clearsolution.view.controller;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.ui.Model;
@@ -56,7 +58,6 @@ public abstract class AbstractController {
     }
 
     protected static class HeaderName {
-
         private String columnName;
         private String tableName;
         private String dbName;
@@ -93,7 +94,6 @@ public abstract class AbstractController {
     }
 
     protected static class HeaderData {
-
         private String headerName;
         private boolean active;
         private boolean sortable;

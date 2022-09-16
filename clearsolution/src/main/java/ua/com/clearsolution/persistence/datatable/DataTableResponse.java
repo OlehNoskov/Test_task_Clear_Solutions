@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class DataTableResponse <E extends BaseEntity>{
+public class DataTableResponse<E extends BaseEntity> {
     @Getter
     @Setter
     private int currentPage;

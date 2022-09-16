@@ -1,6 +1,7 @@
 package ua.com.clearsolution.persistence.crud.impl;
 
 import org.apache.commons.collections4.MapUtils;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -75,7 +76,7 @@ public class CrudRepositoryHelperImpl <
 
     private void checkExist(R repository, Long id) {
         if (!repository.existsById(id)) {
-            throw new RuntimeException("Entity not found");
+            throw new RuntimeException("entity not found");
         }
     }
 }

@@ -88,11 +88,4 @@ public class UserController extends AbstractController {
         model.addAttribute("user", userResponseDto);
         return "pages/user/user_details";
     }
-
-//    @GetMapping("/add/{id}")
-//    public String redirectToAddPatientPage(@PathVariable Long id, Model model, WebRequest request) {
-//        List<StudentResponseDto> students = studentFacade.findAll();
-//        model.addAttribute("students", students);
-//        return "pages/user/user_add";
-//    }
 }

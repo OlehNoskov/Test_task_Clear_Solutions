@@ -3,7 +3,6 @@ package ua.com.clearsolution.persistence.datatable;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class DataTableRequest {
@@ -22,8 +21,4 @@ public class DataTableRequest {
     @Getter
     @Setter
     private Map<String, String[]> requestParamMap;
-
-    public DataTableRequest() {
-        this.requestParamMap = new HashMap<>();
-    }
 }
