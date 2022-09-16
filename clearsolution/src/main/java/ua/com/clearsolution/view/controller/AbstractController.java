@@ -2,13 +2,14 @@ package ua.com.clearsolution.view.controller;
 
 import lombok.Getter;
 import lombok.Setter;
+
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import ua.com.clearsolution.view.dto.response.PageData;
 import ua.com.clearsolution.view.dto.response.ResponseDto;
 
@@ -21,45 +22,15 @@ import static ua.com.clearsolution.util.WebRequestUtil.DEFAULT_ORDER_PARAM_VALUE
 
 public abstract class AbstractController {
 
-    protected void showInfo(Model model, String message) {
-        model.addAttribute("message", message);
-        showMessage(model, true);
-    }
-
-    protected void showInfo(RedirectAttributes redirectAttributes, String message) {
-        redirectAttributes.addFlashAttribute("message", message);
-    }
-
-    protected void showError(Model model, String message) {
-        model.addAttribute("errorMessage", message);
-        showMessage(model, true);
-    }
-
-    protected void showError(RedirectAttributes redirectAttributes, String error) {
-        redirectAttributes.addFlashAttribute("errorMessage", error);
-        showMessage(redirectAttributes, true);
-    }
-
-    protected void showWarn(Model model, String message) {
-        model.addAttribute("warnMessage", message);
-        showMessage(model, true);
-    }
-
-    protected void showWarn(RedirectAttributes redirectAttributes, String message) {
-        redirectAttributes.addFlashAttribute("warnMessage", message);
-    }
-
-    protected void showMessage(Model model, boolean show) {
-        model.addAttribute("showMessage", show);
-    }
-
-    protected void showMessage(RedirectAttributes redirectAttributes, boolean show) {
-        redirectAttributes.addFlashAttribute("showMessage", show);
-    }
-
     protected static class HeaderName {
+        @Getter
+        @Setter
         private String columnName;
+        @Getter
+        @Setter
         private String tableName;
+        @Getter
+        @Setter
         private String dbName;
 
         public HeaderName(String columnName, String tableName, String dbName) {
@@ -67,78 +38,24 @@ public abstract class AbstractController {
             this.tableName = tableName;
             this.dbName = dbName;
         }
-
-        public String getColumnName() {
-            return columnName;
-        }
-
-        public void setColumnName(String columnName) {
-            this.columnName = columnName;
-        }
-
-        public String getTableName() {
-            return tableName;
-        }
-
-        public void setTableName(String tableName) {
-            this.tableName = tableName;
-        }
-
-        public String getDbName() {
-            return dbName;
-        }
-
-        public void setDbName(String dbName) {
-            this.dbName = dbName;
-        }
     }
 
     protected static class HeaderData {
+        @Getter
+        @Setter
         private String headerName;
+        @Getter
+        @Setter
         private boolean active;
+        @Getter
+        @Setter
         private boolean sortable;
+        @Getter
+        @Setter
         private String sort;
+        @Getter
+        @Setter
         private String order;
-
-        public String getHeaderName() {
-            return headerName;
-        }
-
-        public void setHeaderName(String headerName) {
-            this.headerName = headerName;
-        }
-
-        public boolean isActive() {
-            return active;
-        }
-
-        public void setActive(boolean active) {
-            this.active = active;
-        }
-
-        public boolean isSortable() {
-            return sortable;
-        }
-
-        public void setSortable(boolean sortable) {
-            this.sortable = sortable;
-        }
-
-        public String getSort() {
-            return sort;
-        }
-
-        public void setSort(String sort) {
-            this.sort = sort;
-        }
-
-        public String getOrder() {
-            return order;
-        }
-
-        public void setOrder(String order) {
-            this.order = order;
-        }
     }
 
     protected void initDataTable(
