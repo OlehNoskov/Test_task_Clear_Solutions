@@ -16,7 +16,9 @@ import ua.com.clearsolution.view.dto.request.UserRequestDto;
 import ua.com.clearsolution.view.dto.response.PageData;
 import ua.com.clearsolution.view.dto.response.UserResponseDto;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,8 +48,10 @@ public class UserFacadeImpl implements UserFacade {
         user.setEmail(userRequestDto.getEmail());
         user.setFirstname(userRequestDto.getFirstname());
         user.setLastname(userRequestDto.getLastname());
-        if (UserDateValid.userValidDate(userRequestDto) != null) {
+        if (UserDateValid.userValidDate(userRequestDto) != null && isInputDateMoreThanCurrent(userRequestDto)) {
             user.setBirthDay(UserDateValid.userValidDate(userRequestDto));
+        }else {
+            System.out.println("Current data is more!!!");
         }
         user.setCity(userRequestDto.getCity());
         user.setPhone(phone);
@@ -97,5 +101,9 @@ public class UserFacadeImpl implements UserFacade {
         List<User> allUsers = studentService.findAll();
         List<UserResponseDto> list = allUsers.stream().map(UserResponseDto::new).collect(Collectors.toList());
         return list;
+    }
+
+    private boolean isInputDateMoreThanCurrent(UserRequestDto userRequestDto) {
+        return Objects.requireNonNull(UserDateValid.userValidDate(userRequestDto)).before(new Date(System.currentTimeMillis()));
     }
 }
