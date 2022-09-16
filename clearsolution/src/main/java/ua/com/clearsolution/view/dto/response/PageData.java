@@ -1,22 +1,53 @@
 package ua.com.clearsolution.view.dto.response;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class PageData<REQ extends ResponseDto> {
+    @Getter
+    @Setter
     private int currentPage;
+    @Getter
+    @Setter
     private int pageSize;
+    @Getter
+    @Setter
     private int totalPageSize;
+    @Getter
+    @Setter
     private long itemsSize;
+    @Getter
+    @Setter
     private List<REQ> items;
+    @Getter
+    @Setter
     private final int[] pageSizeItems;
+    @Getter
+    @Setter
     private boolean showFirst;
+    @Getter
+    @Setter
     private boolean showPrevious;
+    @Getter
+    @Setter
     private boolean showNext;
+    @Getter
+    @Setter
     private boolean showLast;
+    @Getter
+    @Setter
     private String sort;
+    @Getter
+    @Setter
     private String order;
+    @Getter
+    @Setter
     private int currentShowFromEntries;
+    @Getter
+    @Setter
     private int currentShowToEntries;
 
     public PageData() {
@@ -42,113 +73,5 @@ public class PageData<REQ extends ResponseDto> {
         }
         currentShowFromEntries = ((this.currentPage - 1) * pageSize) + 1;
         currentShowToEntries = ((this.currentPage - 1) * pageSize) + items.size();
-    }
-
-    public int getCurrentPage() {
-        return currentPage;
-    }
-
-    public void setCurrentPage(int currentPage) {
-        this.currentPage = currentPage;
-    }
-
-    public int getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    public int getTotalPageSize() {
-        return totalPageSize;
-    }
-
-    public void setTotalPageSize(int totalPageSize) {
-        this.totalPageSize = totalPageSize;
-    }
-
-    public long getItemsSize() {
-        return itemsSize;
-    }
-
-    public void setItemsSize(long itemsSize) {
-        this.itemsSize = itemsSize;
-    }
-
-    public List<REQ> getItems() {
-        return items;
-    }
-
-    public void setItems(List<REQ> items) {
-        this.items = items;
-    }
-
-    public int[] getPageSizeItems() {
-        return pageSizeItems;
-    }
-
-    public boolean isShowFirst() {
-        return showFirst;
-    }
-
-    public void setShowFirst(boolean showFirst) {
-        this.showFirst = showFirst;
-    }
-
-    public boolean isShowPrevious() {
-        return showPrevious;
-    }
-
-    public void setShowPrevious(boolean showPrevious) {
-        this.showPrevious = showPrevious;
-    }
-
-    public boolean isShowNext() {
-        return showNext;
-    }
-
-    public void setShowNext(boolean showNext) {
-        this.showNext = showNext;
-    }
-
-    public boolean isShowLast() {
-        return showLast;
-    }
-
-    public void setShowLast(boolean showLast) {
-        this.showLast = showLast;
-    }
-
-    public String getSort() {
-        return sort;
-    }
-
-    public void setSort(String sort) {
-        this.sort = sort;
-    }
-
-    public String getOrder() {
-        return order;
-    }
-
-    public void setOrder(String order) {
-        this.order = order;
-    }
-
-    public int getCurrentShowFromEntries() {
-        return currentShowFromEntries;
-    }
-
-    public void setCurrentShowFromEntries(int currentShowFromEntries) {
-        this.currentShowFromEntries = currentShowFromEntries;
-    }
-
-    public int getCurrentShowToEntries() {
-        return currentShowToEntries;
-    }
-
-    public void setCurrentShowToEntries(int currentShowToEntries) {
-        this.currentShowToEntries = currentShowToEntries;
     }
 }

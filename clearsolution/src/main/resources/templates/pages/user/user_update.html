@@ -22,23 +22,23 @@
                                 <form action="#" th:action="@{'/users/update/' + ${user.getId()}}" th:object="${user}" method="post" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <label for="email">Email</label>
-                                        <input type="text" class="form-control" id="email" aria-describedby="email" placeholder="Введите имя" th:field="*{email}" required>
+                                        <input type="text" class="form-control" id="email" aria-describedby="email" placeholder="Enter email" th:field="*{email}" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="name">New first name</label>
-                                        <input type="text" class="form-control" id="name" aria-describedby="name" placeholder="Введите имя" th:field="*{firstname}">
+                                        <input type="text" class="form-control" id="name" aria-describedby="name" placeholder="Enter name" th:field="*{firstname}">
                                     </div>
                                     <div class="form-group">
                                         <label for="lastName">New Last name</label>
-                                        <input type="text" class="form-control" id="lastName" aria-describedby="lastName" placeholder="Введите фамилию" th:field="*{lastname}">
+                                        <input type="text" class="form-control" id="lastName" aria-describedby="lastName" placeholder="Enter surname" th:field="*{lastname}">
                                     </div>
                                     <div class="form-group">
                                         <label for="lastName">New City</label>
-                                        <input type="text" class="form-control" id="city" aria-describedby="city" placeholder="Введите фамилию" th:field="*{city}">
+                                        <input type="text" class="form-control" id="city" aria-describedby="city" placeholder="Enter your current city" th:field="*{city}">
                                     </div>
                                     <div class="form-group">
                                         <label for="lastName">New Phone</label>
-                                        <input type="text" class="form-control" id="phone" aria-describedby="phone" placeholder="Введите фамилию" th:field="*{phone}">
+                                        <input type="text" class="form-control" id="phone" aria-describedby="phone" placeholder="Enter your phone" th:field="*{phone}">
                                     </div>
 
                                     <button type="submit" class="btn btn-primary">Submit</button>

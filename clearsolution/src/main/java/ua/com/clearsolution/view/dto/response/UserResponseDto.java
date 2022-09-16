@@ -29,7 +29,7 @@ public class UserResponseDto extends ResponseDto {
         this.email = user.getEmail();
         this.firstname = user.getFirstname();
         this.lastname = user.getLastname();
-        this.birthday  = user.getBirthday();
+        this.birthday = user.getBirthday();
         this.city = user.getCity();
         this.phone = user.getPhone();
 //        this.age = student.getAge();
