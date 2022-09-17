@@ -22,6 +22,7 @@ public class UserController extends AbstractController {
         this.userFacade = userFacade;
     }
 
+
     private HeaderName[] getColumnTitles() {
         return new HeaderName[]{
                 new HeaderName("#", null, null),
@@ -44,6 +45,20 @@ public class UserController extends AbstractController {
         return "pages/user/users_all";
     }
 
+    @GetMapping("/search")
+    public String findAllByBirthday(Model model, WebRequest request) {
+        PageData<UserResponseDto> response = userFacade.findAll(request);
+        initDataTable(response, getColumnTitles(), model);
+        model.addAttribute("createUrl", "/users/search");
+        model.addAttribute("cardHeader", "All Users");
+        return "pages/user/users_all_search_by_birthday";
+    }
+
+    @PostMapping("/search")
+    public ModelAndView findAllRedirectSearchUsers(WebRequest request, ModelMap model) {
+        return findAllRedirect(request, model, "users/search");
+    }
+
     @PostMapping("/all")
     public ModelAndView findAllRedirect(WebRequest request, ModelMap model) {
         return findAllRedirect(request, model, "users");
@@ -55,11 +70,6 @@ public class UserController extends AbstractController {
         return "pages/user/user_new";
     }
 
-//    @PostMapping("/new")
-//    public String createNewUser(@ModelAttribute("user") UserRequestDto userRequestDto) {
-//        userFacade.create(userRequestDto);
-//        return "redirect:/users";
-//    }
 
     @PostMapping("/new")
     public String createNewUser(@ModelAttribute("user") UserRequestDto userRequestDto, BindingResult bindingResult, Model model) {
@@ -71,12 +81,6 @@ public class UserController extends AbstractController {
         userFacade.create(userRequestDto);
         return "redirect:/users";
     }
-
-//    @PostMapping("/update/{id}")
-//    public String updateUser(@PathVariable Long id, @ModelAttribute("user") UserRequestDto userRequestDto) {
-//        userFacade.update(userRequestDto, id);
-//        return "redirect:/users";
-//    }
 
     @PostMapping("/update/{id}")
     public String updateUser(@PathVariable Long id, @ModelAttribute("user") UserRequestDto userRequestDto, BindingResult bindingResult, Model model) {

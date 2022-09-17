@@ -42,18 +42,18 @@ public class UserFacadeImpl implements UserFacade {
     @Override
     public void create(UserRequestDto userRequestDto) {
         User user = new User();
-        setAllFieldsUser(userRequestDto, user, userRequestDto.getPhone());
+        setAllFieldsUser(userRequestDto, user);
         studentService.create(user);
     }
 
     @Override
     public void update(UserRequestDto userRequestDto, long id) {
         User user = studentService.findById(id).get();
-        setAllFieldsUser(userRequestDto, user, user.getPhone());
+        setAllFieldsUser(userRequestDto, user);
         studentService.update(user);
     }
 
-    private void setAllFieldsUser(UserRequestDto userRequestDto, User user, String phone) {
+    private void setAllFieldsUser(UserRequestDto userRequestDto, User user) {
         user.setEmail(userRequestDto.getEmail());
         user.setFirstname(userRequestDto.getFirstname());
         user.setLastname(userRequestDto.getLastname());
@@ -105,13 +105,6 @@ public class UserFacadeImpl implements UserFacade {
         pageData.setItemsSize(all.getItemsSize());
         pageData.initPaginationState();
         return pageData;
-    }
-
-    @Override
-    public List<UserResponseDto> findAll() {
-        List<User> allUsers = studentService.findAll();
-        List<UserResponseDto> list = allUsers.stream().map(UserResponseDto::new).collect(Collectors.toList());
-        return list;
     }
 
     private boolean isInputDateValid(Date userBirthday) {
