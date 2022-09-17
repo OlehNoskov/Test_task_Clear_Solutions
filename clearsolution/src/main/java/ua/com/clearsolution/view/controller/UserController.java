@@ -13,7 +13,6 @@ import ua.com.clearsolution.view.dto.request.UserRequestDto;
 import ua.com.clearsolution.view.dto.response.PageData;
 import ua.com.clearsolution.view.dto.response.UserResponseDto;
 
-//@RestController
 @Controller
 @RequestMapping("/users")
 public class UserController extends AbstractController {

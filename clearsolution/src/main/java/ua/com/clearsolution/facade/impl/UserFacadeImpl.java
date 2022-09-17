@@ -2,7 +2,6 @@ package ua.com.clearsolution.facade.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.web.context.request.WebRequest;
 
 import ua.com.clearsolution.facade.UserFacade;
@@ -66,7 +65,7 @@ public class UserFacadeImpl implements UserFacade {
             throw new RuntimeException(e);
         }
         user.setCity(userRequestDto.getCity());
-        user.setPhone(phone);
+        user.setPhone(userRequestDto.getPhone());
     }
 
     @Override
@@ -128,11 +127,7 @@ public class UserFacadeImpl implements UserFacade {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        if (Period.between(convertToLocalDateViaInstant(userBirthday), convertToLocalDateViaInstant(new Date(System.currentTimeMillis()))).getYears() >= minAge) {
-            return true;
-        } else {
-            return false;
-        }
+        return Period.between(convertToLocalDateViaInstant(userBirthday), convertToLocalDateViaInstant(new Date(System.currentTimeMillis()))).getYears() >= minAge;
     }
 
     private LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
@@ -149,7 +144,6 @@ public class UserFacadeImpl implements UserFacade {
     @Override
     public void validate(Object target, Errors errors) {
         UserRequestDto userRequestDto = (UserRequestDto) target;
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "birthday", "date.input.error");
         try {
             if (!isInputDateValid(format.parse(userRequestDto.getBirthday())) || !isUserAgeValid(format.parse(userRequestDto.getBirthday()))) {
                 errors.rejectValue("birthday", "date.input.error");
