@@ -7,9 +7,7 @@ public class UserRequestDto extends RequestDto {
     private String email;
     private String firstname;
     private String lastname;
-    private String day;
-    private String months;
-    private String year;
+    private String birthday;
     private String city;
     private String phone;
 }

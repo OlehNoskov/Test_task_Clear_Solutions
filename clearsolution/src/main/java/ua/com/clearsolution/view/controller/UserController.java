@@ -51,29 +51,40 @@ public class UserController extends AbstractController {
     }
 
     @GetMapping("/new")
-    public String redirectToNewStudentPage(Model model) {
+    public String redirectToNewUserPage(Model model) {
         model.addAttribute("user", new UserRequestDto());
         return "pages/user/user_new";
     }
 
 //    @PostMapping("/new")
-//    public String createNewStudent(@ModelAttribute("user") UserRequestDto userRequestDto) {
-//        studentFacade.create(userRequestDto);
+//    public String createNewUser(@ModelAttribute("user") UserRequestDto userRequestDto) {
+//        userFacade.create(userRequestDto);
 //        return "redirect:/users";
 //    }
 
     @PostMapping("/new")
-    public String createNewStudent(@ModelAttribute("user") UserRequestDto userRequestDto, BindingResult bindingResult, Model model) {
+    public String createNewUser(@ModelAttribute("user") UserRequestDto userRequestDto, BindingResult bindingResult, Model model) {
         showMessage(model, false);
         userFacade.validate(userRequestDto, bindingResult);
         if (bindingResult.hasErrors()) {
-            return "users/new";
+            return "pages/user/user_new";
         }
+        userFacade.create(userRequestDto);
         return "redirect:/users";
     }
 
+//    @PostMapping("/new")
+//    public String createNewUser(@ModelAttribute("user") UserRequestDto userRequestDto, BindingResult bindingResult, Model model) {
+//        showMessage(model, false);
+//        userFacade.validate(userRequestDto, bindingResult);
+//        if (bindingResult.hasErrors()) {
+//            return "users/new";
+//        }
+//        return "redirect:/users";
+//    }
+
     @PostMapping("/update/{id}")
-    public String updateStudent(@PathVariable Long id, @ModelAttribute("user") UserRequestDto userRequestDto) {
+    public String updateUser(@PathVariable Long id, @ModelAttribute("user") UserRequestDto userRequestDto) {
         userFacade.update(userRequestDto, id);
         return "redirect:/users";
     }

@@ -2,6 +2,7 @@ package ua.com.clearsolution.facade.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.web.context.request.WebRequest;
 
 import ua.com.clearsolution.facade.UserFacade;
@@ -10,13 +11,15 @@ import ua.com.clearsolution.persistence.datatable.DataTableResponse;
 import ua.com.clearsolution.persistence.entity.User;
 import ua.com.clearsolution.service.UserService;
 import ua.com.clearsolution.util.WebRequestUtil;
-import ua.com.clearsolution.validatedate.UserDateValid;
+//import ua.com.clearsolution.validatedate.UserDateValid;
 import ua.com.clearsolution.view.dto.request.PageAndSizeData;
 import ua.com.clearsolution.view.dto.request.SortData;
 import ua.com.clearsolution.view.dto.request.UserRequestDto;
 import ua.com.clearsolution.view.dto.response.PageData;
 import ua.com.clearsolution.view.dto.response.UserResponseDto;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -26,6 +29,8 @@ import java.util.stream.Collectors;
 public class UserFacadeImpl implements UserFacade {
 
     private final UserService studentService;
+    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
 
     public UserFacadeImpl(UserService studentService) {
         this.studentService = studentService;
@@ -49,11 +54,20 @@ public class UserFacadeImpl implements UserFacade {
         user.setEmail(userRequestDto.getEmail());
         user.setFirstname(userRequestDto.getFirstname());
         user.setLastname(userRequestDto.getLastname());
-        if (UserDateValid.userValidDate(userRequestDto) != null && isInputDateMoreThanCurrent(userRequestDto)) {
-            user.setBirthDay(UserDateValid.userValidDate(userRequestDto));
-        }else {
-            System.out.println("Current data is more!!!");
+        try {
+            if (isInputDateMoreThanCurrent(format.parse(userRequestDto.getBirthday()))) {
+                user.setBirthDay(format.parse(userRequestDto.getBirthday()));
+            } else {
+                System.out.println("Date more than current!");
+            }
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
+//        if (UserDateValid.userValidDate(userRequestDto) != null && isInputDateMoreThanCurrent(userRequestDto)) {
+//            user.setBirthDay(UserDateValid.userValidDate(userRequestDto));
+//        }else {
+//            System.out.println("Current data is more!!!");
+//        }
         user.setCity(userRequestDto.getCity());
         user.setPhone(phone);
     }
@@ -104,11 +118,8 @@ public class UserFacadeImpl implements UserFacade {
         return list;
     }
 
-    private boolean isInputDateMoreThanCurrent(UserRequestDto userRequestDto) {
-        if (UserDateValid.userValidDate(userRequestDto) == null){
-            return false;
-        }
-        return Objects.requireNonNull(UserDateValid.userValidDate(userRequestDto)).before(new Date(System.currentTimeMillis()));
+    private boolean isInputDateMoreThanCurrent(Date userDate) {
+        return userDate.before(new Date(System.currentTimeMillis()));
     }
 
     @Override
@@ -118,8 +129,14 @@ public class UserFacadeImpl implements UserFacade {
 
     @Override
     public void validate(Object target, Errors errors) {
-        if (!isInputDateMoreThanCurrent((UserRequestDto) target)) {
-            errors.rejectValue("day", "date.input.error");
+        UserRequestDto userRequestDto = (UserRequestDto) target;
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "birthday", "date.input.error");
+        try {
+            if (!isInputDateMoreThanCurrent(format.parse(userRequestDto.getBirthday()))) {
+                errors.rejectValue("birthday", "date.input.error");
+            }
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
     }
 }

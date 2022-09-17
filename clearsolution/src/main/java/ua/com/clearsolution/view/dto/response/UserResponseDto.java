@@ -19,10 +19,6 @@ public class UserResponseDto extends ResponseDto {
     @Getter
     private String phone;
 
-    private String day;
-    private String months;
-    private String year;
-
     public UserResponseDto(User user) {
         setId(user.getId());
         this.email = user.getEmail();
@@ -31,17 +27,5 @@ public class UserResponseDto extends ResponseDto {
         this.birthday = user.getBirthDay();
         this.city = user.getCity();
         this.phone = user.getPhone();
-    }
-
-    public String getDay() {
-        return birthday.getDay() + "";
-    }
-
-    public String getMonths() {
-        return birthday.getMonth() + "";
-    }
-
-    public String getYear() {
-        return birthday.getYear() + "";
     }
 }
