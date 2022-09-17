@@ -73,18 +73,19 @@ public class UserController extends AbstractController {
         return "redirect:/users";
     }
 
-//    @PostMapping("/new")
-//    public String createNewUser(@ModelAttribute("user") UserRequestDto userRequestDto, BindingResult bindingResult, Model model) {
-//        showMessage(model, false);
-//        userFacade.validate(userRequestDto, bindingResult);
-//        if (bindingResult.hasErrors()) {
-//            return "users/new";
-//        }
+//    @PostMapping("/update/{id}")
+//    public String updateUser(@PathVariable Long id, @ModelAttribute("user") UserRequestDto userRequestDto) {
+//        userFacade.update(userRequestDto, id);
 //        return "redirect:/users";
 //    }
 
     @PostMapping("/update/{id}")
-    public String updateUser(@PathVariable Long id, @ModelAttribute("user") UserRequestDto userRequestDto) {
+    public String updateUser(@PathVariable Long id, @ModelAttribute("user") UserRequestDto userRequestDto, BindingResult bindingResult, Model model) {
+        showMessage(model, false);
+        userFacade.validate(userRequestDto, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "redirect:/users/update/{id}";
+        }
         userFacade.update(userRequestDto, id);
         return "redirect:/users";
     }
