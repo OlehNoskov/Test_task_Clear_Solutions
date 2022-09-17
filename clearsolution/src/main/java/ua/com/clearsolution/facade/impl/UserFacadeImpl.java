@@ -11,23 +11,27 @@ import ua.com.clearsolution.persistence.datatable.DataTableResponse;
 import ua.com.clearsolution.persistence.entity.User;
 import ua.com.clearsolution.service.UserService;
 import ua.com.clearsolution.util.WebRequestUtil;
-//import ua.com.clearsolution.validatedate.UserDateValid;
 import ua.com.clearsolution.view.dto.request.PageAndSizeData;
 import ua.com.clearsolution.view.dto.request.SortData;
 import ua.com.clearsolution.view.dto.request.UserRequestDto;
 import ua.com.clearsolution.view.dto.response.PageData;
 import ua.com.clearsolution.view.dto.response.UserResponseDto;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
+import java.util.Properties;
 import java.util.stream.Collectors;
 
 @Service
 public class UserFacadeImpl implements UserFacade {
-
     private final UserService studentService;
     private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -55,19 +59,12 @@ public class UserFacadeImpl implements UserFacade {
         user.setFirstname(userRequestDto.getFirstname());
         user.setLastname(userRequestDto.getLastname());
         try {
-            if (isInputDateMoreThanCurrent(format.parse(userRequestDto.getBirthday()))) {
+            if (isInputDateValid(format.parse(userRequestDto.getBirthday())) && isUserAgeValid(format.parse(userRequestDto.getBirthday()))) {
                 user.setBirthDay(format.parse(userRequestDto.getBirthday()));
-            } else {
-                System.out.println("Date more than current!");
             }
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-//        if (UserDateValid.userValidDate(userRequestDto) != null && isInputDateMoreThanCurrent(userRequestDto)) {
-//            user.setBirthDay(UserDateValid.userValidDate(userRequestDto));
-//        }else {
-//            System.out.println("Current data is more!!!");
-//        }
         user.setCity(userRequestDto.getCity());
         user.setPhone(phone);
     }
@@ -118,8 +115,30 @@ public class UserFacadeImpl implements UserFacade {
         return list;
     }
 
-    private boolean isInputDateMoreThanCurrent(Date userDate) {
-        return userDate.before(new Date(System.currentTimeMillis()));
+    private boolean isInputDateValid(Date userBirthday) {
+        return userBirthday.before(new Date(System.currentTimeMillis()));
+    }
+
+    private boolean isUserAgeValid(Date userBirthday) {
+        int minAge = 0;
+        try (InputStream input = new FileInputStream("validation.properties")) {
+            Properties properties = new Properties();
+            properties.load(input);
+            minAge = Integer.parseInt((String) properties.get("age"));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        if (Period.between(convertToLocalDateViaInstant(userBirthday), convertToLocalDateViaInstant(new Date(System.currentTimeMillis()))).getYears() >= minAge) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
+        return dateToConvert.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
     }
 
     @Override
@@ -132,7 +151,7 @@ public class UserFacadeImpl implements UserFacade {
         UserRequestDto userRequestDto = (UserRequestDto) target;
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "birthday", "date.input.error");
         try {
-            if (!isInputDateMoreThanCurrent(format.parse(userRequestDto.getBirthday()))) {
+            if (!isInputDateValid(format.parse(userRequestDto.getBirthday())) || !isUserAgeValid(format.parse(userRequestDto.getBirthday()))) {
                 errors.rejectValue("birthday", "date.input.error");
             }
         } catch (ParseException e) {
