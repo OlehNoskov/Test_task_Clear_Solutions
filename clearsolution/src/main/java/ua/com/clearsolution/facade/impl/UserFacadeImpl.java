@@ -104,10 +104,9 @@ public class UserFacadeImpl implements UserFacade {
                 .filter(user -> user.getBirthday().after(from) && user.getBirthday().before(to))
                 .collect(Collectors.toList()));
 
-        System.out.println(from);
-        System.out.println(to);
-        System.out.println(all.getItems());
-
+//        System.out.println(from);
+//        System.out.println(to);
+//        System.out.println(all.getItems());
         return all;
     }
 

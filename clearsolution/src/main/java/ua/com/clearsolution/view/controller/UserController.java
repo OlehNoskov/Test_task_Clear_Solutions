@@ -6,21 +6,19 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.ModelAndView;
 
+import org.springframework.web.servlet.ModelAndView;
 import ua.com.clearsolution.facade.UserFacade;
 import ua.com.clearsolution.view.dto.request.DateRequestDto;
 import ua.com.clearsolution.view.dto.request.UserRequestDto;
 import ua.com.clearsolution.view.dto.response.PageData;
 import ua.com.clearsolution.view.dto.response.UserResponseDto;
 
-import java.text.ParseException;
-import java.util.Date;
-
 @Controller
 @RequestMapping("/users")
 public class UserController extends AbstractController {
     private final UserFacade userFacade;
+    private DateRequestDto dateDto;
 
     public UserController(UserFacade userFacade) {
         this.userFacade = userFacade;
@@ -53,26 +51,37 @@ public class UserController extends AbstractController {
         return findAllRedirect(request, model, "users");
     }
 
-    @GetMapping("/search")
-    public String findAllByBirthday(Model model, WebRequest request) throws ParseException {
-        PageData<UserResponseDto> response = userFacade.searchAllUsersFromDateToDate(request, DateRequestDto.getParserDate("2000-10-10"), DateRequestDto.getParserDate("2020-01-01"));
+    @GetMapping("/search/all")
+    public String findAllByBirthday(Model model, WebRequest request) {
+        PageData<UserResponseDto> response = userFacade.searchAllUsersFromDateToDate(request, dateDto.getParserDateFrom(), dateDto.getParserDateTo());
         initDataTable(response, getColumnTitles(), model);
-        model.addAttribute("createUrl", "/users/search");
-        model.addAttribute("cardHeader", "All Users");
+        model.addAttribute("createUrl", "/users/search/all");
+        model.addAttribute("cardHeader", "All search Users");
         return "pages/user/users_all_search_by_birthday";
     }
 
-//    @PostMapping("/search")
-//    public ModelAndView findAllRedirectSearchUsers(WebRequest request, ModelMap model, DateRequestDto dateRequestDto) {
-//        return findAllRedirect(request, model, "users/search");
-//    }
+    @GetMapping("/search")
+    public String all(Model model) {
+        model.addAttribute("dates", new DateRequestDto());
+        return "pages/user/search";
+    }
+
+    @PostMapping("/search")
+    public String findAllRedirectSearchUsers(@ModelAttribute("dates") DateRequestDto dateRequestDto) {
+        dateDto.setDateFrom(dateRequestDto.getDateFrom());
+        dateDto.setDateTo(dateRequestDto.getDateTo());
+
+        System.out.println(dateDto.getDateFrom());
+        System.out.println(dateDto.getDateTo());
+
+        return "redirect:/users/search/all";
+    }
 
     @GetMapping("/new")
     public String redirectToNewUserPage(Model model) {
         model.addAttribute("user", new UserRequestDto());
         return "pages/user/user_new";
     }
-
 
     @PostMapping("/new")
     public String createNewUser(@ModelAttribute("user") UserRequestDto userRequestDto, BindingResult bindingResult, Model model) {
@@ -85,6 +94,13 @@ public class UserController extends AbstractController {
         return "redirect:/users";
     }
 
+    @GetMapping("/update/{id}")
+    public String update(@PathVariable Long id, Model model) {
+        UserResponseDto userResponseDto = userFacade.findById(id);
+        model.addAttribute("user", userResponseDto);
+        return "pages/user/user_update";
+    }
+
     @PostMapping("/update/{id}")
     public String updateUser(@PathVariable Long id, @ModelAttribute("user") UserRequestDto userRequestDto, BindingResult bindingResult, Model model) {
         showMessage(model, false);
@@ -94,13 +110,6 @@ public class UserController extends AbstractController {
         }
         userFacade.update(userRequestDto, id);
         return "redirect:/users";
-    }
-
-    @GetMapping("/update/{id}")
-    public String update(@PathVariable Long id, Model model) {
-        UserResponseDto userResponseDto = userFacade.findById(id);
-        model.addAttribute("user", userResponseDto);
-        return "pages/user/user_update";
     }
 
     @GetMapping("/delete/{id}")
