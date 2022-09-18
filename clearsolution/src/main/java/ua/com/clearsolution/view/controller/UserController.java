@@ -18,7 +18,7 @@ import ua.com.clearsolution.view.dto.response.UserResponseDto;
 @RequestMapping("/users")
 public class UserController extends AbstractController {
     private final UserFacade userFacade;
-    private DateRequestDto dateDto;
+    private DateRequestDto dateDto = new DateRequestDto();
 
     public UserController(UserFacade userFacade) {
         this.userFacade = userFacade;

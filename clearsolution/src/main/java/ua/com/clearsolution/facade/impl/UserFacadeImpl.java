@@ -136,7 +136,7 @@ public class UserFacadeImpl implements UserFacade {
         try (InputStream input = new FileInputStream("validation.properties")) {
             Properties properties = new Properties();
             properties.load(input);
-            minAge = Integer.parseInt((String) properties.get("age"));
+            minAge = Integer.parseInt((String) properties.get("min.age"));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
