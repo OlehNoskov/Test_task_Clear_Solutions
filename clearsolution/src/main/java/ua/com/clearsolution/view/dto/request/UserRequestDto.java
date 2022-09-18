@@ -20,7 +20,7 @@ public class UserRequestDto extends RequestDto {
 
     public Date getParserDateFrom() {
         try {
-            return format.parse(getDateFrom());
+            return format.parse(dateFrom);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
@@ -28,7 +28,7 @@ public class UserRequestDto extends RequestDto {
 
     public Date getParserDateTo() {
         try {
-            return format.parse(getDateTo());
+            return format.parse(dateTo);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }

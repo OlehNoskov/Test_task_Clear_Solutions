@@ -159,10 +159,11 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
-    public void validateDates(Object target, Errors errors){
+    public void validateDates(Object target, Errors errors) {
         UserRequestDto userRequestDto = (UserRequestDto) target;
         if (!userRequestDto.isDateFromBeforeDateTo()) {
             errors.rejectValue("dates", "date.input.error");
+            System.out.println("I am here!");
         }
     }
 }
