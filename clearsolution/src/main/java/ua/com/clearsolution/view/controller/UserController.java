@@ -9,7 +9,6 @@ import org.springframework.web.context.request.WebRequest;
 
 import org.springframework.web.servlet.ModelAndView;
 import ua.com.clearsolution.facade.UserFacade;
-import ua.com.clearsolution.view.dto.request.DateRequestDto;
 import ua.com.clearsolution.view.dto.request.UserRequestDto;
 import ua.com.clearsolution.view.dto.response.PageData;
 import ua.com.clearsolution.view.dto.response.UserResponseDto;
@@ -18,7 +17,7 @@ import ua.com.clearsolution.view.dto.response.UserResponseDto;
 @RequestMapping("/users")
 public class UserController extends AbstractController {
     private final UserFacade userFacade;
-    private DateRequestDto dateDto = new DateRequestDto();
+    private UserRequestDto dateDto = new UserRequestDto();
 
     public UserController(UserFacade userFacade) {
         this.userFacade = userFacade;
@@ -62,18 +61,21 @@ public class UserController extends AbstractController {
 
     @GetMapping("/search")
     public String all(Model model) {
-        model.addAttribute("dates", new DateRequestDto());
+        model.addAttribute("dates", new UserRequestDto());
         return "pages/user/search";
     }
 
     @PostMapping("/search")
-    public String findAllRedirectSearchUsers(@ModelAttribute("dates") DateRequestDto dateRequestDto) {
-        dateDto.setDateFrom(dateRequestDto.getDateFrom());
-        dateDto.setDateTo(dateRequestDto.getDateTo());
-
-        System.out.println(dateDto.getDateFrom());
-        System.out.println(dateDto.getDateTo());
-
+    public String findAllRedirectSearchUsers(@ModelAttribute("dates") UserRequestDto dateRequestDto, BindingResult bindingResult, Model model) {
+        showMessage(model, false);
+        userFacade.validateDates(dateRequestDto, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "pages/user/search";
+        }
+        if (dateRequestDto.isDateFromBeforeDateTo()) {
+            dateDto.setDateFrom(dateRequestDto.getDateFrom());
+            dateDto.setDateTo(dateRequestDto.getDateTo());
+        }
         return "redirect:/users/search/all";
     }
 

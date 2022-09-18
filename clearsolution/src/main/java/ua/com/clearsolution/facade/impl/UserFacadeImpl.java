@@ -99,14 +99,10 @@ public class UserFacadeImpl implements UserFacade {
         dataTableRequest.setSort(sortData.getSort());
         dataTableRequest.setOrder(sortData.getOrder());
 
-        PageData<UserResponseDto>  all = findAll(request);
+        PageData<UserResponseDto> all = findAll(request);
         all.setItems(all.getItems().stream()
                 .filter(user -> user.getBirthday().after(from) && user.getBirthday().before(to))
                 .collect(Collectors.toList()));
-
-//        System.out.println(from);
-//        System.out.println(to);
-//        System.out.println(all.getItems());
         return all;
     }
 
@@ -159,6 +155,14 @@ public class UserFacadeImpl implements UserFacade {
         UserRequestDto userRequestDto = (UserRequestDto) target;
         if (!isInputDateValid(userRequestDto.getParserDateBirthday()) || !isUserAgeValid(userRequestDto.getParserDateBirthday())) {
             errors.rejectValue("birthday", "date.input.error");
+        }
+    }
+
+    @Override
+    public void validateDates(Object target, Errors errors){
+        UserRequestDto userRequestDto = (UserRequestDto) target;
+        if (!userRequestDto.isDateFromBeforeDateTo()) {
+            errors.rejectValue("dates", "date.input.error");
         }
     }
 }
