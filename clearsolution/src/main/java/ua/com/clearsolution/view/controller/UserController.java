@@ -9,9 +9,13 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import ua.com.clearsolution.facade.UserFacade;
+import ua.com.clearsolution.view.dto.request.DateRequestDto;
 import ua.com.clearsolution.view.dto.request.UserRequestDto;
 import ua.com.clearsolution.view.dto.response.PageData;
 import ua.com.clearsolution.view.dto.response.UserResponseDto;
+
+import java.text.ParseException;
+import java.util.Date;
 
 @Controller
 @RequestMapping("/users")
@@ -21,7 +25,6 @@ public class UserController extends AbstractController {
     public UserController(UserFacade userFacade) {
         this.userFacade = userFacade;
     }
-
 
     private HeaderName[] getColumnTitles() {
         return new HeaderName[]{
@@ -45,24 +48,24 @@ public class UserController extends AbstractController {
         return "pages/user/users_all";
     }
 
+    @PostMapping("/all")
+    public ModelAndView findAllRedirect(WebRequest request, ModelMap model) {
+        return findAllRedirect(request, model, "users");
+    }
+
     @GetMapping("/search")
-    public String findAllByBirthday(Model model, WebRequest request) {
-        PageData<UserResponseDto> response = userFacade.findAll(request);
+    public String findAllByBirthday(Model model, WebRequest request) throws ParseException {
+        PageData<UserResponseDto> response = userFacade.searchAllUsersFromDateToDate(request, DateRequestDto.getParserDate("2000-10-10"), DateRequestDto.getParserDate("2020-01-01"));
         initDataTable(response, getColumnTitles(), model);
         model.addAttribute("createUrl", "/users/search");
         model.addAttribute("cardHeader", "All Users");
         return "pages/user/users_all_search_by_birthday";
     }
 
-    @PostMapping("/search")
-    public ModelAndView findAllRedirectSearchUsers(WebRequest request, ModelMap model) {
-        return findAllRedirect(request, model, "users/search");
-    }
-
-    @PostMapping("/all")
-    public ModelAndView findAllRedirect(WebRequest request, ModelMap model) {
-        return findAllRedirect(request, model, "users");
-    }
+//    @PostMapping("/search")
+//    public ModelAndView findAllRedirectSearchUsers(WebRequest request, ModelMap model, DateRequestDto dateRequestDto) {
+//        return findAllRedirect(request, model, "users/search");
+//    }
 
     @GetMapping("/new")
     public String redirectToNewUserPage(Model model) {

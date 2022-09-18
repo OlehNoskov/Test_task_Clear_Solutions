@@ -85,6 +85,33 @@ public class UserFacadeImpl implements UserFacade {
 
         DataTableResponse<User> all = studentService.findAll(dataTableRequest);
 
+        return getUserResponseDtoPageData(pageAndSizeData, sortData, all);
+    }
+
+    @Override
+    public PageData<UserResponseDto> searchAllUsersFromDateToDate(WebRequest request, Date from, Date to) {
+        PageAndSizeData pageAndSizeData = WebRequestUtil.generatePageAndSizeData(request);
+        SortData sortData = WebRequestUtil.generateSortData(request);
+
+        DataTableRequest dataTableRequest = new DataTableRequest();
+        dataTableRequest.setSize(pageAndSizeData.getSize());
+        dataTableRequest.setPage(pageAndSizeData.getPage());
+        dataTableRequest.setSort(sortData.getSort());
+        dataTableRequest.setOrder(sortData.getOrder());
+
+        PageData<UserResponseDto>  all = findAll(request);
+        all.setItems(all.getItems().stream()
+                .filter(user -> user.getBirthday().after(from) && user.getBirthday().before(to))
+                .collect(Collectors.toList()));
+
+        System.out.println(from);
+        System.out.println(to);
+        System.out.println(all.getItems());
+
+        return all;
+    }
+
+    private PageData<UserResponseDto> getUserResponseDtoPageData(PageAndSizeData pageAndSizeData, SortData sortData, DataTableResponse<User> all) {
         List<UserResponseDto> list = all.getItems().
                 stream().
                 map(UserResponseDto::new).
