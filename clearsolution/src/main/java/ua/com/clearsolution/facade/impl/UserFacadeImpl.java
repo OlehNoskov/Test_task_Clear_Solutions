@@ -19,8 +19,7 @@ import ua.com.clearsolution.view.dto.response.UserResponseDto;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
@@ -32,8 +31,6 @@ import java.util.stream.Collectors;
 @Service
 public class UserFacadeImpl implements UserFacade {
     private final UserService studentService;
-    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
 
     public UserFacadeImpl(UserService studentService) {
         this.studentService = studentService;
@@ -57,12 +54,9 @@ public class UserFacadeImpl implements UserFacade {
         user.setEmail(userRequestDto.getEmail());
         user.setFirstname(userRequestDto.getFirstname());
         user.setLastname(userRequestDto.getLastname());
-        try {
-            if (isInputDateValid(format.parse(userRequestDto.getBirthday())) && isUserAgeValid(format.parse(userRequestDto.getBirthday()))) {
-                user.setBirthDay(format.parse(userRequestDto.getBirthday()));
-            }
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
+
+        if (isInputDateValid(userRequestDto.getParserDateBirthday()) && isUserAgeValid(userRequestDto.getParserDateBirthday())) {
+            user.setBirthDay(userRequestDto.getParserDateBirthday());
         }
         user.setCity(userRequestDto.getCity());
         user.setPhone(userRequestDto.getPhone());
@@ -137,12 +131,8 @@ public class UserFacadeImpl implements UserFacade {
     @Override
     public void validate(Object target, Errors errors) {
         UserRequestDto userRequestDto = (UserRequestDto) target;
-        try {
-            if (!isInputDateValid(format.parse(userRequestDto.getBirthday())) || !isUserAgeValid(format.parse(userRequestDto.getBirthday()))) {
-                errors.rejectValue("birthday", "date.input.error");
-            }
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
+        if (!isInputDateValid(userRequestDto.getParserDateBirthday()) || !isUserAgeValid(userRequestDto.getParserDateBirthday())) {
+            errors.rejectValue("birthday", "date.input.error");
         }
     }
 }
