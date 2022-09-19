@@ -1,19 +1,25 @@
 package ua.com.clearsolution.persistence.entity;
 
 import groovy.transform.EqualsAndHashCode;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
 @Data
+@Builder
+@AllArgsConstructor
+@Entity
 @EqualsAndHashCode(callSuper = true)
 public class User extends BaseEntity {
     public User() {
         super();
     }
+
     @Column(nullable = false)
     private String email;
 

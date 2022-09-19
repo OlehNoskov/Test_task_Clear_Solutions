@@ -30,6 +30,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User createAndReturn(User entity) {
+        repositoryHelper.create(userRepository, entity);
+        return entity;
+    }
+
+    @Override
+    public User updateAndReturn(User entity) {
+        repositoryHelper.update(userRepository, entity);
+        return entity;
+    }
+
+    @Override
     public void update(User entity) {
         repositoryHelper.update(userRepository, entity);
     }

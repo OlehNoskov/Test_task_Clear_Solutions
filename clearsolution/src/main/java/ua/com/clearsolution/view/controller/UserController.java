@@ -1,14 +1,17 @@
 package ua.com.clearsolution.view.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
-
 import org.springframework.web.servlet.ModelAndView;
+
 import ua.com.clearsolution.facade.UserFacade;
+import ua.com.clearsolution.persistence.entity.User;
 import ua.com.clearsolution.view.dto.request.UserRequestDto;
 import ua.com.clearsolution.view.dto.response.PageData;
 import ua.com.clearsolution.view.dto.response.UserResponseDto;
@@ -86,14 +89,15 @@ public class UserController extends AbstractController {
     }
 
     @PostMapping("/new")
-    public String createNewUser(@ModelAttribute("user") UserRequestDto userRequestDto, BindingResult bindingResult, Model model) {
-        showMessage(model, false);
+    @ResponseBody
+    public ResponseEntity<?> createNewUser(@ModelAttribute("user") UserRequestDto userRequestDto, BindingResult bindingResult) {
         userFacade.validate(userRequestDto, bindingResult);
-        if (bindingResult.hasErrors()) {
-            return "pages/user/user_new";
+        try {
+            User user = userFacade.createAndReturn(userRequestDto);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        userFacade.create(userRequestDto);
-        return "redirect:/users";
     }
 
     @GetMapping("/update/{id}")
@@ -104,14 +108,13 @@ public class UserController extends AbstractController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateUser(@PathVariable Long id, @ModelAttribute("user") UserRequestDto userRequestDto, BindingResult bindingResult, Model model) {
-        showMessage(model, false);
-        userFacade.validate(userRequestDto, bindingResult);
-        if (bindingResult.hasErrors()) {
-            return "redirect:/users/update/{id}";
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @ModelAttribute("user") UserRequestDto userRequestDto) {
+        try {
+            User user = userFacade.updateAndReturn(userRequestDto, id);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        userFacade.update(userRequestDto, id);
-        return "redirect:/users";
     }
 
     @GetMapping("/delete/{id}")

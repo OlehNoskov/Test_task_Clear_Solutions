@@ -26,32 +26,52 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
 public class UserFacadeImpl implements UserFacade {
-    private final UserService studentService;
+    private final UserService userService;
 
     public UserFacadeImpl(UserService studentService) {
-        this.studentService = studentService;
+        this.userService = studentService;
+    }
+
+    @Override
+    public User createAndReturn(UserRequestDto userRequestDto) {
+        User user = new User();
+        setAllFieldsUser(userRequestDto, user);
+        userService.create(user);
+        return user;
     }
 
     @Override
     public void create(UserRequestDto userRequestDto) {
         User user = new User();
         setAllFieldsUser(userRequestDto, user);
-        studentService.create(user);
+        userService.create(user);
+    }
+
+    @Override
+    public User updateAndReturn(UserRequestDto userRequestDto, long id) {
+        User user = userService.findById(id).get();
+        setAllFieldsUser(userRequestDto, user);
+        userService.update(user);
+        return user;
     }
 
     @Override
     public void update(UserRequestDto userRequestDto, long id) {
-        User user = studentService.findById(id).get();
+        User user = userService.findById(id).get();
         setAllFieldsUser(userRequestDto, user);
-        studentService.update(user);
+        userService.update(user);
     }
 
     private void setAllFieldsUser(UserRequestDto userRequestDto, User user) {
-        user.setEmail(userRequestDto.getEmail());
+        if (isEmailValid(userRequestDto.getEmail())) {
+            user.setEmail(userRequestDto.getEmail());
+        }
         user.setFirstname(userRequestDto.getFirstname());
         user.setLastname(userRequestDto.getLastname());
 
@@ -64,12 +84,12 @@ public class UserFacadeImpl implements UserFacade {
 
     @Override
     public void delete(long id) {
-        studentService.delete(id);
+        userService.delete(id);
     }
 
     @Override
     public UserResponseDto findById(long id) {
-        return new UserResponseDto(studentService.findById(id).get());
+        return new UserResponseDto(userService.findById(id).get());
     }
 
     @Override
@@ -83,7 +103,7 @@ public class UserFacadeImpl implements UserFacade {
         dataTableRequest.setSort(sortData.getSort());
         dataTableRequest.setOrder(sortData.getOrder());
 
-        DataTableResponse<User> all = studentService.findAll(dataTableRequest);
+        DataTableResponse<User> all = userService.findAll(dataTableRequest);
 
         return getUserResponseDtoPageData(pageAndSizeData, sortData, all);
     }
@@ -106,6 +126,11 @@ public class UserFacadeImpl implements UserFacade {
         return all;
     }
 
+    @Override
+    public List<User> findAll() {
+        return userService.findAll();
+    }
+
     private PageData<UserResponseDto> getUserResponseDtoPageData(PageAndSizeData pageAndSizeData, SortData sortData, DataTableResponse<User> all) {
         List<UserResponseDto> list = all.getItems().
                 stream().
@@ -121,6 +146,13 @@ public class UserFacadeImpl implements UserFacade {
         pageData.setItemsSize(all.getItemsSize());
         pageData.initPaginationState();
         return pageData;
+    }
+
+    private boolean isEmailValid(String email) {
+        String regexEmail = "^(.+)@(.+)$";
+        Pattern pattern = Pattern.compile(regexEmail);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
     private boolean isInputDateValid(Date userBirthday) {
@@ -163,7 +195,6 @@ public class UserFacadeImpl implements UserFacade {
         UserRequestDto userRequestDto = (UserRequestDto) target;
         if (!userRequestDto.isDateFromBeforeDateTo()) {
             errors.rejectValue("dates", "date.input.error");
-            System.out.println("I am here!");
         }
     }
 }
