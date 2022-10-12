@@ -36,18 +36,6 @@ public class HibernateConfig {
     @Value("${spring.jpa.show-sql}")
     private Boolean showSql;
 
-    @Value("${spring.jpa.properties.hibernate.jdbc.max_size}")
-    private String maxSize;
-
-    @Value("${spring.jpa.properties.hibernate.jdbc.min_size}")
-    private String minSize;
-
-    @Value("${spring.jpa.properties.hibernate.jdbc.batch_size}")
-    private String batchSize;
-
-    @Value("${spring.jpa.properties.hibernate.jdbc.fetch_size}")
-    private String fetchSize;
-
     @Value("${spring.jpa.properties.hibernate.enable_lazy_load_no_trans}")
     private String lazyLoad;
 
@@ -55,10 +43,6 @@ public class HibernateConfig {
     private static final String HIBERNATE_HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
     private static final String HIBERNATE_SHOW_SQL = "hibernate.show_sql";
     private static final String HIBERNATE_ENABLE_LAZY_LOAD_NO_TRANS = "hibernate.enable_lazy_load_no_trans";
-    private static final String MAX_SIZE = "hibernate.c3p0.max_size";
-    private static final String MIN_SIZE = "hibernate.c3p0.min_size";
-    private static final String BATCH_SIZE = "hibernate.jdbc.batch_size";
-    private static final String FETCH_SIZE = "hibernate.jdbc.fetch_size";
     private static final String ENTITY_MANAGER_PACKAGES_TO_SCAN = "ua.com.clearsolution.persistence.entity";
 
     @Bean
@@ -99,10 +83,6 @@ public class HibernateConfig {
         properties.put(HIBERNATE_HBM2DDL_AUTO, hbm2ddl);
         properties.put(HIBERNATE_SHOW_SQL, showSql);
         properties.put(HIBERNATE_ENABLE_LAZY_LOAD_NO_TRANS, lazyLoad);
-        properties.put(MAX_SIZE, maxSize);
-        properties.put(MIN_SIZE, minSize);
-        properties.put(BATCH_SIZE, batchSize);
-        properties.put(FETCH_SIZE, fetchSize);
         return properties;
     }
 }
