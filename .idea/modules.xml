@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Test_task_Clear_Solutions.iml" filepath="$PROJECT_DIR$/.idea/Test_task_Clear_Solutions.iml" />
       <module fileurl="file://$PROJECT_DIR$/clearsolution/clearsolution.iml" filepath="$PROJECT_DIR$/clearsolution/clearsolution.iml" />
-      <module fileurl="file://$PROJECT_DIR$/client.iml" filepath="$PROJECT_DIR$/client.iml" />
     </modules>
   </component>
 </project>
